@@ -36,17 +36,11 @@ export const generateTelegramMessage = (data) => `
 💰 Tổng Liquidity: ${parseFloat(data.totalLiquidityUSD).toLocaleString()}
 📈 Phần trăm LP Locked: ${data.lpLockedPercentage > 50 ? '🟢' : '🔴'} ${data.lpLockedPercentage}%`;
 
-
 export const generateToken1 = (item) => `
 🚩 Score: ${item}`;
-
 export const generatetotalHolders = (item) => `
-💰 Holders: ${item}
----------------------------------------------------------------
-`;
-
+💰 Holders: ${item}`;
 export const generateMessageAds = (item) => `
-🚩 Ads: ${item ? 'Có Ads' : 'Không có Ads'}`;
-
+📢Ads: ${item ? '✅' : '❌'}`;
 export const generateMessageGtScore = (item) => `
-🚩 GT Score: ${item}`;
+✨Geckoterminal Score: ${item.toFixed(1)}`;
