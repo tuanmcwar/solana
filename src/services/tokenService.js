@@ -127,18 +127,17 @@ export const processTokensProfile = async (mappingData) => {
 
     const filteredData = allDetails.filter(item =>
         item.chainId === 'solana' &&
-        item.fdv > 10000 
-        // &&
-        // item.fdv < 2000000 &&
-        // item.volume?.h24 > 20000 &&
-        // item.liquidity?.usd > 10000 &&
-        // item.priceChange?.m5 > -70 &&
-        // item.priceChange?.h1 > -70 &&
-        // item.priceChange?.h24 > 0 &&
-        // item.priceChange?.h6 > 0 &&
-        // item?.info?.socials?.length > 0 &&
-        // item.txns?.h24?.buys > 300 &&
-        // item.gecko?.data?.attributes?.gt_score >= 10
+        item.fdv > 10000  &&
+        item.fdv < 2000000 &&
+        item.volume?.h24 > 20000 &&
+        item.liquidity?.usd > 10000 &&
+        item.priceChange?.m5 > -70 &&
+        item.priceChange?.h1 > -70 &&
+        item.priceChange?.h24 > 0 &&
+        item.priceChange?.h6 > 0 &&
+        item?.info?.socials?.length > 0 &&
+        item.txns?.h24?.buys > 300 &&
+        item.gecko?.data?.attributes?.gt_score >= 20
     );
 
     for (const item of filteredData) {
@@ -154,7 +153,7 @@ export const processTokensProfile = async (mappingData) => {
             const sumTop20Holder = (rugCheckResult?.topHolders || []).slice(1, 21).reduce((sum, holder) => sum + holder.pct, 0);
             const scoreRugCheck = (rugCheckResult.score);
             const totalHoldersRugCheck = (rugCheckResult.totalHolders);
-            if (true) {
+            if (lpLocked.lpLockedPercentage >= 50 && sumTop1Holder < 30 && sumTop10Holder  < 30 && sumTop20Holder < 50  && scoreRugCheck < 1000 /*&& totalHoldersRugCheck > 500*/) {
                 const message = `${generateTokenAnnouncement(item)}
                 ${generateTopHoldersMessage(rugCheckResult.topHolders)}
 
