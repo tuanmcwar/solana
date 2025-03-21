@@ -46,4 +46,4 @@ export const generateMessageAds = (item) => `
 export const generateMessageBoot = (item) => `
 📢Boots: ${item.boosts?.active > 0 ? `${item.boosts?.active}⚡️` : '⚠️'}`;
 export const generateMessageGtScore = (item) => `
-✨Geckoterminal Score: ${item}`;
+✨Geckoterminal Score: ${item.toFixed(1)}`;
