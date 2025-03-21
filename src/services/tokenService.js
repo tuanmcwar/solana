@@ -7,6 +7,7 @@ import {
     generateToken1,
     generatetotalHolders,
     generateTokenAnnouncement,
+    generateMessageBoot,
     generateTopHoldersMessage, generateMessageAds, generateMessageGtScore
 
 } from '../utils/messages.js';
@@ -63,7 +64,7 @@ export const fetchGetAdsToken = async (tokenAddress) => {
 
 export const fetchTokenDetails = async (chainId, tokenAddress) => {
     try {
-        const response = await fetch(`https://api.dexscreener.com/tokens/v1/${chainId}/${tokenAddress}`);
+        const response = await fetch(`https://api.dexscreener.com/tokens/v1/solana/${tokenAddress}`);
         if (!response.ok) {
             console.error(`HTTP error! status: ${response.status}`);
             return [];
@@ -127,17 +128,18 @@ export const processTokensProfile = async (mappingData) => {
 
     const filteredData = allDetails.filter(item =>
         item.chainId === 'solana' &&
-        item.fdv > 10000   &&
-        item.fdv < 2000000 &&
-        item.volume?.h24 > 20000 &&
-        item.liquidity?.usd > 10000 &&
-        item.priceChange?.m5 > -70 &&
-        item.priceChange?.h1 > -70 &&
-        item.priceChange?.h24 > 0 &&
-        item.priceChange?.h6 > 0 &&
-        item?.info?.socials?.length > 0 &&
-        item.txns?.h24?.buys > 300 &&
-        item.gecko?.data?.attributes?.gt_score >= 30
+        item.fdv > 10000
+            // &&
+        // item.fdv < 2000000 &&
+        // item.volume?.h24 > 20000 &&
+        // item.liquidity?.usd > 10000 &&
+        // item.priceChange?.m5 > -70 &&
+        // item.priceChange?.h1 > -70 &&
+        // item.priceChange?.h24 > 0 &&
+        // item.priceChange?.h6 > 0 &&
+        // item?.info?.socials?.length > 0 &&
+        // item.txns?.h24?.buys > 300 &&
+        // item.gecko?.data?.attributes?.gt_score >= 30
     );
 
     for (const item of filteredData) {
@@ -153,7 +155,7 @@ export const processTokensProfile = async (mappingData) => {
             const sumTop20Holder = (rugCheckResult?.topHolders || []).slice(1, 21).reduce((sum, holder) => sum + holder.pct, 0);
             const scoreRugCheck = (rugCheckResult.score);
             const totalHoldersRugCheck = (rugCheckResult.totalHolders);
-            if (lpLocked.lpLockedPercentage >= 50 && sumTop1Holder < 30 && sumTop10Holder  < 30 && sumTop20Holder < 40  && scoreRugCheck < 1000 /*&& totalHoldersRugCheck > 500*/) {
+            if (true) {
                 const message = `${generateTokenAnnouncement(item)}
                 ${generateTopHoldersMessage(rugCheckResult.topHolders)}
 
@@ -161,11 +163,13 @@ export const processTokensProfile = async (mappingData) => {
                 ${generateTelegramMessage(lpLocked)}
                 ${generatetotalHolders(rugCheckResult.totalHolders)}
                 ${generateMessageAds(item.adsToken.some(item => item?.type === 'tokenAd'))}
+                ${generateMessageBoot(item)}
+                
                 ${generateMessageGtScore(item.gecko?.data?.attributes?.gt_score)}
                 `;
-                
-                await sendMessageToAllChats(message);
-                await new TokenModel({ key: tokenKey, data: newTokenData }).save();
+                console.log(message);
+                // await sendMessageToAllChats(message);
+                // await new TokenModel({ key: tokenKey, data: newTokenData }).save();
             }
         } else if (!isEqual(existingTokenData.data, newTokenData)) {
             existingTokenData.data = newTokenData;

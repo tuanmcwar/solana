@@ -27,6 +27,7 @@ export const generateTokenAnnouncement = (item, isNewToken = false, isViewToken 
 🔔 ${isNewToken ? 'New Token' : ""} ${isViewToken ? 'View Most Token' : ""}
 ➤ CA: ${item.baseToken.address}
 💎 Name: ${item.baseToken?.symbol || ""}
+🔎 Chain: ${item.chainId}
 🔗 Geckoterminal: https://www.geckoterminal.com/solana/pools/${item.baseToken.address}
 🔗 DEX: (${item.url || ""})
 🏛️ Market Cap: ${item.marketCap ? item.marketCap.toLocaleString() : "0"}
@@ -42,5 +43,7 @@ export const generatetotalHolders = (item) => `
 💰 Holders: ${item}`;
 export const generateMessageAds = (item) => `
 📢Ads: ${item ? '✅' : '❌'}`;
+export const generateMessageBoot = (item) => `
+📢Boots: ${item.boosts?.active > 0 ? `${item.boosts?.active}⚡️` : '⚠️'}`;
 export const generateMessageGtScore = (item) => `
 ✨Geckoterminal Score: ${item.toFixed(1)}`;
