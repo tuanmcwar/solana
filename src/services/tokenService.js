@@ -130,16 +130,15 @@ export const processTokensProfile = async (mappingData) => {
         item.chainId === 'solana' &&
         item.fdv > 10000 &&
         item.fdv < 2000000 &&
-        item.volume?.h24 > 20000 &&
-        item.liquidity?.usd > 10000 &&
-        item.priceChange?.m5 > -70 &&
-        item.priceChange?.h1 > -70 &&
-        item.priceChange?.h24 > 0 &&
-        item.priceChange?.h6 > 0 &&
-        item?.info?.socials?.length > 0 &&
-        item.txns?.h24?.buys > 300 
-        // &&
-        // item.gecko?.data?.attributes?.gt_score >= 30
+        // item.volume?.h24 > 20000 &&
+        // item.liquidity?.usd > 10000 &&
+        // item.priceChange?.m5 > -70 &&
+        // item.priceChange?.h1 > -70 &&
+        // item.priceChange?.h24 > 0 &&
+        // item.priceChange?.h6 > 0 &&
+        // item?.info?.socials?.length > 0 &&
+        // item.txns?.h24?.buys > 300 &&
+        item.gecko?.data?.attributes?.gt_score >= 10
     );
 
     for (const item of filteredData) {
@@ -166,9 +165,9 @@ export const processTokensProfile = async (mappingData) => {
                 ${generateMessageBoot(item)}
                 ${generateMessageGtScore(item.gecko?.data?.attributes?.gt_score)}
                 `;
-                
-                await sendMessageToAllChats(message);
-                await new TokenModel({ key: tokenKey, data: newTokenData }).save();
+                console.log(message);
+                // await sendMessageToAllChats(message);
+                // await new TokenModel({ key: tokenKey, data: newTokenData }).save();
             }
         } else if (!isEqual(existingTokenData.data, newTokenData)) {
             existingTokenData.data = newTokenData;
