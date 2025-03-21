@@ -128,17 +128,17 @@ export const processTokensProfile = async (mappingData) => {
 
     const filteredData = allDetails.filter(item =>
         item.chainId === 'solana' &&
-        item.fdv > 10000
-            // &&
-        // item.fdv < 2000000 &&
-        // item.volume?.h24 > 20000 &&
-        // item.liquidity?.usd > 10000 &&
-        // item.priceChange?.m5 > -70 &&
-        // item.priceChange?.h1 > -70 &&
-        // item.priceChange?.h24 > 0 &&
-        // item.priceChange?.h6 > 0 &&
-        // item?.info?.socials?.length > 0 &&
-        // item.txns?.h24?.buys > 300 &&
+        item.fdv > 10000 &&
+        item.fdv < 2000000 &&
+        item.volume?.h24 > 20000 &&
+        item.liquidity?.usd > 10000 &&
+        item.priceChange?.m5 > -70 &&
+        item.priceChange?.h1 > -70 &&
+        item.priceChange?.h24 > 0 &&
+        item.priceChange?.h6 > 0 &&
+        item?.info?.socials?.length > 0 &&
+        item.txns?.h24?.buys > 300 
+        // &&
         // item.gecko?.data?.attributes?.gt_score >= 30
     );
 
@@ -164,7 +164,6 @@ export const processTokensProfile = async (mappingData) => {
                 ${generatetotalHolders(rugCheckResult.totalHolders)}
                 ${generateMessageAds(item.adsToken.some(item => item?.type === 'tokenAd'))}
                 ${generateMessageBoot(item)}
-                
                 ${generateMessageGtScore(item.gecko?.data?.attributes?.gt_score)}
                 `;
                 
