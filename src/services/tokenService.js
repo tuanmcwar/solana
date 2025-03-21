@@ -138,7 +138,7 @@ export const processTokensProfile = async (mappingData) => {
         item.priceChange?.h6 > 0 &&
         item?.info?.socials?.length > 0 &&
         item.txns?.h24?.buys > 300 &&
-        item.gecko?.data?.attributes?.gt_score >= 25
+        item.gecko?.data?.attributes?.gt_score >= 30
     );
 
     for (const item of filteredData) {
