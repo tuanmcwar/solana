@@ -23,15 +23,35 @@ export const generateTopHoldersMessage = (holders) => {
     return message;
 };
 
-export const generateTokenAnnouncement = (item, isNewToken = false, isViewToken = false) => `
+// export const generateTokenAnnouncement = (item, isNewToken = false, isViewToken = false) => `
+// 🔔 ${isNewToken ? 'New Token' : ""} ${isViewToken ? 'View Most Token' : ""}
+// ➤ CA: ${item.baseToken.address}
+// 💎 Name: ${item.baseToken?.symbol || ""}
+// 🔎 Chain: ${item.chainId}
+// 🔗 [Geckoterminal](https://www.geckoterminal.com/solana/pools/${item.baseToken.address})
+// 🔗 DEX: (${item.url || ""})
+// 🏛️ Market Cap: ${item.marketCap ? item.marketCap.toLocaleString() : "0"}
+// 💧 Liquidity: ${item.liquidity?.usd ? item.liquidity.usd.toLocaleString() : "0"}\n`;
+
+export const generateTokenAnnouncement = (item, isNewToken = false, isViewToken = false) => {
+    return {
+        text: `
 🔔 ${isNewToken ? 'New Token' : ""} ${isViewToken ? 'View Most Token' : ""}
 ➤ CA: ${item.baseToken.address}
 💎 Name: ${item.baseToken?.symbol || ""}
 🔎 Chain: ${item.chainId}
-🔗 [Geckoterminal](https://www.geckoterminal.com/solana/pools/${item.baseToken.address})
-🔗 DEX: (${item.url || ""})
 🏛️ Market Cap: ${item.marketCap ? item.marketCap.toLocaleString() : "0"}
-💧 Liquidity: ${item.liquidity?.usd ? item.liquidity.usd.toLocaleString() : "0"}\n`;
+💧 Liquidity: ${item.liquidity?.usd ? item.liquidity.usd.toLocaleString() : "0"}
+        `,
+        reply_markup: {
+            inline_keyboard: [
+                [{ text: "🔗 Geckoterminal", url: `https://www.geckoterminal.com/solana/pools/${item.baseToken.address}` }],
+                [{ text: "🔗 DEX", url: item.url || "https://example.com" }]
+            ]
+        }
+    };
+};
+
 
 export const generateTelegramMessage = (data) => `
 💰 Tổng Liquidity: ${parseFloat(data.totalLiquidityUSD).toLocaleString()}
@@ -46,4 +66,4 @@ export const generateMessageAds = (item) => `
 export const generateMessageBoot = (item) => `
 📢Boots: ${item.boosts?.active > 0 ? `${item.boosts?.active}⚡️` : '⚠️'}`;
 export const generateMessageGtScore = (item) => `
-✨Geckoterminal Score: ${item.toFixed(1)}`;
+✨Geckoterminal Score: ${item}`;

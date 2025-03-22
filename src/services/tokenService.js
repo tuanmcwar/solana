@@ -164,8 +164,9 @@ export const processTokensProfile = async (mappingData) => {
                 ${generateMessageAds(item.adsToken.some(item => item?.type === 'tokenAd'))}
                 ${generateMessageBoot(item)}
                 ${generateMessageGtScore(item.gecko?.data?.attributes?.gt_score)}
+                
                 `;
-
+                    // console.log(message);
                 await sendMessageToAllChats(message);
                 await new TokenModel({ key: tokenKey, data: newTokenData }).save();
             }
@@ -176,6 +177,7 @@ export const processTokensProfile = async (mappingData) => {
     }
     return filteredData;
 };
+
 // ${generateRiskMessage(rugCheckResult.risks)}
 
 export const processTokensNew = async (mappingData, isNewToken = false) => {
