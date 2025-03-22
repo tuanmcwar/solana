@@ -22,35 +22,18 @@ export const generateTopHoldersMessage = (holders) => {
     message += `- 🔝 Top 20 Holders: ${holders.slice(1, 21).reduce((sum, holder) => sum + holder.pct, 0).toFixed(2)}%`;
     return message;
 };
-
-// export const generateTokenAnnouncement = (item, isNewToken = false, isViewToken = false) => `
-// 🔔 ${isNewToken ? 'New Token' : ""} ${isViewToken ? 'View Most Token' : ""}
-// ➤ CA: ${item.baseToken.address}
-// 💎 Name: ${item.baseToken?.symbol || ""}
-// 🔎 Chain: ${item.chainId}
-// 🔗 [Geckoterminal](https://www.geckoterminal.com/solana/pools/${item.baseToken.address})
-// 🔗 DEX: (${item.url || ""})
-// 🏛️ Market Cap: ${item.marketCap ? item.marketCap.toLocaleString() : "0"}
-// 💧 Liquidity: ${item.liquidity?.usd ? item.liquidity.usd.toLocaleString() : "0"}\n`;
-
-export const generateTokenAnnouncement = (item, isNewToken = false, isViewToken = false) => {
-    return {
-        text: `
+export const generateTokenAnnouncement = (item, isNewToken = false, isViewToken = false) => `
 🔔 ${isNewToken ? 'New Token' : ""} ${isViewToken ? 'View Most Token' : ""}
-➤ CA: ${item.baseToken.address}
-💎 Name: ${item.baseToken?.symbol || ""}
-🔎 Chain: ${item.chainId}
-🏛️ Market Cap: ${item.marketCap ? item.marketCap.toLocaleString() : "0"}
-💧 Liquidity: ${item.liquidity?.usd ? item.liquidity.usd.toLocaleString() : "0"}
-        `,
-        reply_markup: {
-            inline_keyboard: [
-                [{ text: "🔗 Geckoterminal", url: `https://www.geckoterminal.com/solana/pools/${item.baseToken.address}` }],
-                [{ text: "🔗 DEX", url: item.url || "https://example.com" }]
-            ]
-        }
-    };
-};
+➤ <b>CA:</b> <code>${item.baseToken.address}</code>
+💎 <b>Name:</b> ${item.baseToken?.symbol || ""}
+🔎 <b>Chain:</b> ${item.chainId}
+🏛️ <b>Market Cap:</b> ${item.marketCap ? item.marketCap.toLocaleString() : "0"}
+💧 <b>Liquidity:</b> ${item.liquidity?.usd ? item.liquidity.usd.toLocaleString() : "0"}
+
+<a href="https://www.geckoterminal.com/solana/pools/${item.baseToken.address}">🔗 Geckoterminal</a>
+`;
+
+
 
 
 export const generateTelegramMessage = (data) => `

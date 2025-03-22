@@ -127,8 +127,9 @@ export const processTokensProfile = async (mappingData) => {
     const allDetails = detailsArr.flat();
 
     const filteredData = allDetails.filter(item =>
-        item.chainId === 'solana' &&
-        item.fdv > 10000 &&
+        item.chainId === 'solana'
+            // &&
+        // item.fdv > 10000 &&
         // item.fdv < 2000000 &&
         // item.volume?.h24 > 20000 &&
         // item.liquidity?.usd > 10000 &&
@@ -138,7 +139,7 @@ export const processTokensProfile = async (mappingData) => {
         // item.priceChange?.h6 > 0 &&
         // item?.info?.socials?.length > 0 &&
         // item.txns?.h24?.buys > 300 &&
-        item.gecko?.data?.attributes?.gt_score >= 0
+        // item.gecko?.data?.attributes?.gt_score >= 0
     );
 
     for (const item of filteredData) {
