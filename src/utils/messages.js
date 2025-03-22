@@ -23,22 +23,27 @@ export const generateTopHoldersMessage = (holders) => {
     message += `- 🔝 Top 20 Holders: ${holders.slice(1, 21).reduce((sum, holder) => sum + holder.pct, 0).toFixed(2)}%`;
     return message;
 };
-
 export const generateTokenAnnouncement = (item, isNewToken = false, isViewToken = false) => {
-    const formatUrl = (url) => url?.replace(/\./g, "[.]") || "N/A"; // Làm mờ link
-    const formatNumber = (num) => (num ? num.toLocaleString() : "0"); // Định dạng số
+    // Escape Markdown v2 (trừ dấu chấm ".")
+    // Biến link thành text có thể nhấp
+    const formatUrlAsText = (url) => url ? `(${url})` : "N/A";
+
+    // Định dạng số với dấu phẩy
+    const formatNumber = (num) => (num ? num.toLocaleString("de-DE") : "0");
 
     return `
 🔔 ${isNewToken ? 'New Token' : ""} ${isViewToken ? 'View Most Token' : ""}
 ➤ CA: ${item.baseToken?.address || "N/A"}
 💎 Name: ${item.baseToken?.symbol || "Unknown"}
 🔎 Chain: ${item.chainId || "N/A"}
-🔗 Geckoterminal: https://www[.]geckoterminal.com/solana/pools/${item.baseToken?.address || ""}
-🔗 DEX: ${formatUrl(item.url)}
+🔗 Geckoterminal: ${formatUrlAsText(`https://www.geckoterminal.com/solana/pools/${item.baseToken?.address || ""}`)}
+🔗 DEX: ${formatUrlAsText(item.url)}
 🏛️ Market Cap: ${formatNumber(item.marketCap)}
 💧 Liquidity: ${formatNumber(item.liquidity?.usd)}
-  `;
+    `;
 };
+
+
 
 
 
@@ -54,5 +59,8 @@ export const generateMessageAds = (item) => `
 📢Ads: ${item ? '✅' : '❌'}`;
 export const generateMessageBoot = (item) => `
 📢Boots: ${item.boosts?.active > 0 ? `${item.boosts?.active}⚡️` : '⚠️'}`;
+const formatNumber = (num) =>
+    num ? num.toLocaleString("de-DE", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) : "0";
 export const generateMessageGtScore = (item) => `
-✨Geckoterminal Score: ${item}`;
+✨Geckoterminal Score: ${formatNumber(item)}
+`;
