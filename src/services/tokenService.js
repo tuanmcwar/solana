@@ -166,9 +166,8 @@ export const processTokensProfile = async (mappingData) => {
                 ${generateMessageGtScore(item.gecko?.data?.attributes?.gt_score)}
                 `;
 
-                console.log(message);
-                // await sendMessageToAllChats(message);
-                // await new TokenModel({ key: tokenKey, data: newTokenData }).save();
+                await sendMessageToAllChats(message);
+                await new TokenModel({ key: tokenKey, data: newTokenData }).save();
             }
         } else if (!isEqual(existingTokenData.data, newTokenData)) {
             existingTokenData.data = newTokenData;
