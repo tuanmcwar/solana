@@ -28,7 +28,7 @@ export const generateTokenAnnouncement = (item, isNewToken = false, isViewToken 
 ➤ CA: ${item.baseToken.address}
 💎 Name: ${item.baseToken?.symbol || ""}
 🔎 Chain: ${item.chainId}
-🔗 Geckoterminal: https://www.geckoterminal.com/solana/pools/${item.baseToken.address}
+🔗 [Geckoterminal](https://www.geckoterminal.com/solana/pools/${item.baseToken.address})
 🔗 DEX: (${item.url || ""})
 🏛️ Market Cap: ${item.marketCap ? item.marketCap.toLocaleString() : "0"}
 💧 Liquidity: ${item.liquidity?.usd ? item.liquidity.usd.toLocaleString() : "0"}\n`;
