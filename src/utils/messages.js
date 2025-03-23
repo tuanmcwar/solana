@@ -24,12 +24,32 @@ export const generateTopHoldersMessage = (holders) => {
     return message;
 };
 export const generateTokenAnnouncement = (item, isNewToken = false, isViewToken = false) => {
-    // Escape Markdown v2 (trừ dấu chấm ".")
     // Biến link thành text có thể nhấp
     const formatUrlAsText = (url) => url ? `(${url})` : "N/A";
-
     // Định dạng số với dấu phẩy
     const formatNumber = (num) => (num ? num.toLocaleString("de-DE") : "0");
+    const liquidityUsd = item.liquidity?.usd ?? 0;  // Nếu undefined thì lấy 0
+    const fdv = item.fdv ?? 1;  // Nếu undefined hoặc 0 thì đặt giá trị hợp lý để tránh lỗi chia 0
+    const percentage = (fdv !== 0) ? (liquidityUsd / fdv) * 100 : 0;
+
+    //time
+    const pairCreatedAt = new Date(item.pairCreatedAt); // Chuyển timestamp thành Date
+    const now = new Date(); // Lấy thời gian hiện tại
+// Tính khoảng cách thời gian (đơn vị: milliseconds)
+    const diffMs = now - pairCreatedAt;
+// Chuyển đổi sang phút, giờ, ngày
+    const diffMinutes = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMinutes / 60);
+    const diffDays = Math.floor(diffHours / 24);
+// Xuất kết quả phù hợp
+    let timeDiffString = "";
+    if (diffDays > 0) {
+        timeDiffString = `${diffDays}d`;
+    } else if (diffHours > 0) {
+        timeDiffString = `${diffHours}h`;
+    } else {
+        timeDiffString = `${diffMinutes}m`;
+    }
 
     return `
 🔔 ${isNewToken ? 'New Token' : ""} ${isViewToken ? 'View Most Token' : ""}
@@ -39,7 +59,10 @@ export const generateTokenAnnouncement = (item, isNewToken = false, isViewToken 
 🔗 Geckoterminal: ${formatUrlAsText(`https://www.geckoterminal.com/solana/pools/${item.baseToken?.address || ""}`)}
 🔗 DEX: ${formatUrlAsText(item.url)}
 🏛️ Market Cap: ${formatNumber(item.marketCap)}
-💧 Liquidity: ${formatNumber(item.liquidity?.usd)}
+💧 Liquidity: ${formatNumber(item.liquidity?.usd)} 📌${Math.round(percentage)}% 
+╰┈➤ Age:🍀${timeDiffString} | 📢Boots:${item.boosts?.active > 0 ? `${item.boosts?.active}⚡️` : '⚠️'}
+
+
     `;
 };
 
@@ -48,8 +71,7 @@ export const generateTokenAnnouncement = (item, isNewToken = false, isViewToken 
 
 
 export const generateTelegramMessage = (data) => `
-💰 Tổng Liquidity: ${parseFloat(data.totalLiquidityUSD).toLocaleString()}
-📈 Phần trăm LP Locked: ${data.lpLockedPercentage > 50 ? '🟢' : '🔴'} ${data.lpLockedPercentage}%`;
+💰 Tổng Liquidity: ${parseFloat(data.totalLiquidityUSD).toLocaleString()} 📌${data.lpLockedPercentage > 50 ? '🟢' : '🔴'} ${data.lpLockedPercentage}%`;
 
 export const generateToken1 = (item) => `
 🚩 Score: ${item}`;
