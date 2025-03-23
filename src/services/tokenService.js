@@ -4,10 +4,8 @@ import {sendMessageToAllChats} from './telegramService.js';
 import {
     generateRiskMessage,
     generateTelegramMessage,
-    generateToken1,
     generatetotalHolders,
     generateTokenAnnouncement,
-    generateMessageBoot,
     generateTopHoldersMessage, generateMessageAds, generateMessageGtScore
 
 } from '../utils/messages.js';
@@ -154,18 +152,14 @@ export const processTokensProfile = async (mappingData) => {
             const sumTop20Holder = (rugCheckResult?.topHolders || []).slice(1, 21).reduce((sum, holder) => sum + holder.pct, 0);
             const scoreRugCheck = (rugCheckResult.score);
             const totalHoldersRugCheck = (rugCheckResult.totalHolders);
+            // if (true) {
             if (lpLocked.lpLockedPercentage >= 50 && sumTop1Holder < 30 && sumTop10Holder  < 30 && sumTop20Holder < 40  && scoreRugCheck < 1000 /*&& totalHoldersRugCheck > 500*/) {
                 const message = `${generateTokenAnnouncement(item)}
-                ${generateTopHoldersMessage(rugCheckResult.topHolders)}
-
-                ${generateToken1(rugCheckResult.score)}
-                ${generateTelegramMessage(lpLocked)}
-                ${generatetotalHolders(rugCheckResult.totalHolders)}
                 ${generateMessageAds(item.adsToken.some(item => item?.type === 'tokenAd'))}
-                ${generateMessageBoot(item)}
+                ${generateTelegramMessage(lpLocked)}
+                ${generatetotalHolders(rugCheckResult)}
                 ${generateMessageGtScore(item.gecko?.data?.attributes?.gt_score)}
-                
-                `;
+                ${generateTopHoldersMessage(rugCheckResult.topHolders)}                `;
                     // console.log(message);
                 await sendMessageToAllChats(message);
                 await new TokenModel({ key: tokenKey, data: newTokenData }).save();
