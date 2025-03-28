@@ -51,6 +51,10 @@ export const generateTokenAnnouncement = (item, isNewToken = false, isViewToken 
         timeDiffString = `${diffMinutes}M`;
     }
 
+    // tuổi
+    //time
+
+
     return `
 🔔 ${isNewToken ? 'New Token' : ""} ${isViewToken ? 'View Most Token' : ""}
 ➤ CA: ${item.baseToken?.address || "N/A"}
