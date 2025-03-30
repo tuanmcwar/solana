@@ -72,8 +72,11 @@ export const generateTelegramMessage = (data) => `
 export const generatetotalHolders = (item) => `
 💰 Holders: ${item.totalHolders} ▐▐ 🚩 Score: ${item.score}`;
 
+// export const generateMessageAds = (item) => `
+// 📣Ads: ${item ? '✅' : '❌'}`;
+
 export const generateMessageAds = (item) => `
-📣Ads: ${item ? '✅' : '❌'}`;
+📣Ads: ${item.some(item => item?.type === 'tokenAd') ? '✅' : '❌'} ▐▐ 🔥 ${item.some(item => item?.type === 'communityTakeover') ? '✅' : '❌'}`;
 
 const formatNumber = (num) =>
     num ? num.toLocaleString("de-DE", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) : "0";

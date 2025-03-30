@@ -62,7 +62,7 @@ export const fetchGetAdsToken = async (tokenAddress) => {
 
 export const fetchTokenDetails = async (chainId, tokenAddress) => {
     try {
-        const response = await fetch(`https://api.dexscreener.com/tokens/v1/solana/${tokenAddress}`);
+        const response = await fetch(`https://api.dexscreener.com/tokens/v1/${chainId}/${tokenAddress}`);
         if (!response.ok) {
             console.error(`HTTP error! status: ${response.status}`);
             return [];
@@ -136,7 +136,9 @@ export const processTokensProfile = async (mappingData) => {
         item.priceChange?.h6 > 0 &&
         item?.info?.socials?.length > 0 &&
         item.txns?.h24?.buys > 300 &&
-        item.gecko?.data?.attributes?.gt_score >= 30
+        // item.adsToken.some(item => item?.type === 'tokenAd') &&
+        // item.boosts?.active >0 &&
+        item.gecko?.data?.attributes?.gt_score >= 0
     );
 
     for (const item of filteredData) {
@@ -152,17 +154,25 @@ export const processTokensProfile = async (mappingData) => {
             const sumTop20Holder = (rugCheckResult?.topHolders || []).slice(1, 21).reduce((sum, holder) => sum + holder.pct, 0);
             const scoreRugCheck = (rugCheckResult.score);
             const totalHoldersRugCheck = (rugCheckResult.totalHolders);
+            // điều kiện timestamp
+            const THIRTY_MINUTES = 30 * 60 * 1000; // 30 phút (milliseconds)
+            const now = Date.now(); // Lấy timestamp hiện tại
+
+
             // if (true) {
-            if (lpLocked.lpLockedPercentage >= 50 && sumTop1Holder < 30 && sumTop10Holder  < 30 && sumTop20Holder < 40  && scoreRugCheck < 1000 /*&& totalHoldersRugCheck > 500*/) {
+            if (lpLocked.lpLockedPercentage >= 50 && sumTop1Holder < 30 && sumTop10Holder  < 30 && sumTop20Holder < 40  && scoreRugCheck < 1000  /*&& (now - item.pairCreatedAt) < THIRTY_MINUTES && totalHoldersRugCheck > 500*/) {
+
                 const message = `${generateTokenAnnouncement(item)}
-                ${generateMessageAds(item.adsToken.some(item => item?.type === 'tokenAd'))}
+                ${generateMessageAds(item.adsToken)}
                 ${generateTelegramMessage(lpLocked)}
                 ${generatetotalHolders(rugCheckResult)}
                 ${generateMessageGtScore(item.gecko?.data?.attributes?.gt_score)}
-                ${generateTopHoldersMessage(rugCheckResult.topHolders)}                `;
-                    // console.log(message);
-                await sendMessageToAllChats(message);
-                await new TokenModel({ key: tokenKey, data: newTokenData }).save();
+                ${generateTopHoldersMessage(rugCheckResult.topHolders)} 
+                `;
+                console.log(message);
+
+                // await sendMessageToAllChats(message);
+                // await new TokenModel({ key: tokenKey, data: newTokenData }).save();
             }
         } else if (!isEqual(existingTokenData.data, newTokenData)) {
             existingTokenData.data = newTokenData;
@@ -171,7 +181,7 @@ export const processTokensProfile = async (mappingData) => {
     }
     return filteredData;
 };
-
+// ${generateMessageAds(item.adsToken.some(item => item?.type === 'tokenAd'))}
 // ${generateRiskMessage(rugCheckResult.risks)}
 
 export const processTokensNew = async (mappingData, isNewToken = false) => {
