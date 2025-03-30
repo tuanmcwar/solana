@@ -4,7 +4,7 @@ import {mainProcessMostViewToken} from "../services/ViewTokenService.js";
 import {mainProcessTokenOther} from "../services/tokenOtherService.js";
 
 export const startSchedulerCheckTokenProfile = () => {
-    return cron.schedule('*/1 * * * *', async () => {
+    return cron.schedule('*/10 * * * *', async () => {
         console.log(`[${new Date().toISOString()}] Run Scheduler check token profile ....`);
         if(process.env.OTHER_CHAIN === 1) {
             await mainProcessTokenOther();
