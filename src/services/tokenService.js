@@ -160,7 +160,13 @@ export const processTokensProfile = async (mappingData) => {
 
 
             // if (true) {
-            if (lpLocked.lpLockedPercentage >= 50 && sumTop1Holder < 30 && sumTop10Holder  < 30 && sumTop20Holder < 40  && scoreRugCheck < 1000  /*&& (now - item.pairCreatedAt) < THIRTY_MINUTES && totalHoldersRugCheck > 500*/) {
+            if (lpLocked.lpLockedPercentage >= 50 &&
+                sumTop1Holder < 30 &&
+                sumTop10Holder  < 30 &&
+                sumTop20Holder < 40  &&
+                scoreRugCheck < 1000
+                /*&& (now - item.pairCreatedAt) < THIRTY_MINUTES &&
+                totalHoldersRugCheck > 500*/) {
 
                 const message = `${generateTokenAnnouncement(item)}
                 ${generateMessageAds(item.adsToken)}
@@ -169,10 +175,10 @@ export const processTokensProfile = async (mappingData) => {
                 ${generateMessageGtScore(item.gecko?.data?.attributes?.gt_score)}
                 ${generateTopHoldersMessage(rugCheckResult.topHolders)} 
                 `;
-                console.log(message);
+                // console.log(message);
 
-                // await sendMessageToAllChats(message);
-                // await new TokenModel({ key: tokenKey, data: newTokenData }).save();
+                await sendMessageToAllChats(message);
+                await new TokenModel({ key: tokenKey, data: newTokenData }).save();
             }
         } else if (!isEqual(existingTokenData.data, newTokenData)) {
             existingTokenData.data = newTokenData;
