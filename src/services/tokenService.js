@@ -164,9 +164,9 @@ export const processTokensProfile = async (mappingData) => {
                 sumTop1Holder < 30 &&
                 sumTop10Holder  < 30 &&
                 sumTop20Holder < 40  &&
-                scoreRugCheck < 1000
-                /*&& (now - item.pairCreatedAt) < THIRTY_MINUTES &&
-                totalHoldersRugCheck > 500*/) {
+                scoreRugCheck < 1000 && 
+                (now - item.pairCreatedAt) < THIRTY_MINUTES /*&&
+                 totalHoldersRugCheck > 500*/) {
 
                 const message = `${generateTokenAnnouncement(item)}
                 ${generateMessageAds(item.adsToken)}
