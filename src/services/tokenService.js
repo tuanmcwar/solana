@@ -155,7 +155,7 @@ export const processTokensProfile = async (mappingData) => {
             const scoreRugCheck = (rugCheckResult.score);
             const totalHoldersRugCheck = (rugCheckResult.totalHolders);
             // điều kiện timestamp
-            const THIRTY_MINUTES = 30 * 60 * 1000; // 30 phút (milliseconds)
+            const THIRTY_MINUTES = 20 * 60 * 1000; // 30 phút (milliseconds)
             const now = Date.now(); // Lấy timestamp hiện tại
 
 
@@ -163,7 +163,7 @@ export const processTokensProfile = async (mappingData) => {
             if (lpLocked.lpLockedPercentage >= 50 &&
                 sumTop1Holder < 30 &&
                 sumTop10Holder  < 30 &&
-                sumTop20Holder < 40  &&
+                sumTop20Holder < 50  &&
                 scoreRugCheck < 1000 && 
                 (now - item.pairCreatedAt) < THIRTY_MINUTES /*&&
                  totalHoldersRugCheck > 500*/) {
