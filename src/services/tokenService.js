@@ -155,7 +155,7 @@ export const processTokensProfile = async (mappingData) => {
             const scoreRugCheck = (rugCheckResult.score);
             const totalHoldersRugCheck = (rugCheckResult.totalHolders);
             // điều kiện timestamp
-            const THIRTY_MINUTES = 20 * 60 * 1000; // 30 phút (milliseconds)
+            const THIRTY_MINUTES = 50 * 60 * 1000; // 30 phút (milliseconds)
             const now = Date.now(); // Lấy timestamp hiện tại
 
 
