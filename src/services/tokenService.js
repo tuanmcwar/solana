@@ -272,7 +272,8 @@ export const processTokensProfile = async (mappingData) => {
                 if (
                     sumTop1Holder < 30 &&
                     sumTop10Holder  < 30 &&
-                    sumTop20Holder < 40  /*&&
+                    sumTop20Holder < 40  &&
+                    scoreRugCheck < 1000 /*&&
                     (now - item.pairCreatedAt) < THIRTY_MINUTES &&
                     lpLocked.lpLockedPercentage >= 50 &&
                     totalHoldersRugCheck > 500*/) {
