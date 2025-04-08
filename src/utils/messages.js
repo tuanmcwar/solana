@@ -12,15 +12,22 @@ export const generateRiskMessage = (risks) => {
 };
 
 export const generateTopHoldersMessage = (holders) => {
-    let message = "\n📊**Top Holder Coin**\n";
+
+    let message = `\n📊<b>Top Holder Coin</b>\n`;
     holders.slice(0, 11).forEach(holder => {
-        message += `${holder.pct.toFixed(1)}%|`;
+        const link = `https://solscan.io/account/${holder.owner}`;
+        const percent = holder.pct.toFixed(1);
+        message += `<a href="${link}">${percent}%</a> | `;
     });
-    message += "\n📋 Kết Luận:\n";
-    message += `- 💵 Liquidity Ratio: ${holders[0].pct.toFixed(1)}%\n`;
-    message += `- 🥇 Top 1 Holders: ${holders[1].pct.toFixed(1)}%\n`;
-    message += `- 🔟 Top 10 Holders: ${holders.slice(1, 11).reduce((sum, holder) => sum + holder.pct, 0).toFixed(1)}%\n`;
-    message += `- 🔝 Top 20 Holders: ${holders.slice(1, 21).reduce((sum, holder) => sum + holder.pct, 0).toFixed(1)}%`;
+
+    message += "\n📋 <b>Kết Luận:</b>\n";
+    message += `- 💵 <b>Liquidity Ratio:</b> ${holders[0].pct.toFixed(1)}%\n`;
+    message += `- 🥇 <b>Top 1 Holders:</b> ${holders[1].pct.toFixed(1)}%\n`;
+    message += `- 🔟 <b>Top 10 Holders:</b> ${holders.slice(1, 11).reduce((sum, holder) => sum + holder.pct, 0).toFixed(1)}%\n`;
+    message += `- 🔝 <b>Top 20 Holders:</b> ${holders.slice(1, 21).reduce((sum, holder) => sum + holder.pct, 0).toFixed(1)}%\n`;
+    message += `⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘\n`;
+    message += `✈️✈️✈️✈️✈️ 𝓨𝗼𝘂'𝗿𝗲 𝗽𝗲𝗿𝗳𝗲𝗰𝘁! ✈️✈️✈️✈️✈️`;
+
     return message;
 };
 export const generateTokenAnnouncement = (item, isNewToken = false, isViewToken = false) => {
@@ -51,35 +58,74 @@ export const generateTokenAnnouncement = (item, isNewToken = false, isViewToken 
         timeDiffString = `${diffMinutes}M`;
     }
 
-    // tuổi
-    //time
+    // const website = item.info?.websites?.[0]?.url;
+    // const twitter = item.info?.socials?.find(s => s.type === "twitter")?.url;
+    // const telegram = item.info?.socials?.find(s => s.type === "telegram")?.url;
+    //
+    const website = item.info?.websites?.[0]?.url;
+    const twitter = item.info?.socials?.find(s => s.type === "twitter")?.url;
+    const telegram = item.info?.socials?.find(s => s.type === "telegram")?.url;
+
+// Nếu twitter đúng định dạng cá nhân (không phải post/community), trích username
+    const twitterUsername = twitter && /^https:\/\/x\.com\/[^\/]+$/.test(twitter)
+        ? twitter.split('/').pop()
+        : null;
+
 
 
     return `
-🔔 ${isNewToken ? 'New Token' : ""} ${isViewToken ? 'View Most Token' : ""}
-➤ CA: ${item.baseToken?.address || "N/A"}
-💎 Name: ${item.baseToken?.symbol || "Unknown"}
-🔎 Chain: ${item.chainId || "N/A"}
-🔗 Geckoterminal: ${formatUrlAsText(`https://www.geckoterminal.com/solana/pools/${item.baseToken?.address || ""}`)}
-🔗 DEX: ${formatUrlAsText(item.url)}
-🏛️ Market Cap: ${formatNumber(item.marketCap)}
-💧 Liquidity: ${formatNumber(item.liquidity?.usd)} 📌${Math.round(percentage)}% 
-╰┈➤ Age: 🌱${timeDiffString} ▐▐ 📢Boots: ${item.boosts?.active > 0 ? `${item.boosts?.active}⚡️` : '⚠️'}`;
+ (づ ᴗ _ᴗ)づ♡ 💸💸💸💸💸💸💸💸💸💸💸💸${isNewToken ? 'New Token' : ""} ${isViewToken ? 'View Most Token' : ""}
+ 
+➤ <b>CA:</b> <code>${item.baseToken?.address || "N/A"}</code>
+💎 <b>Name:</b> ${item.baseToken?.symbol || "Unknown"}
+🔎 <b>Chain:</b> ${item.chainId || "N/A"}
+🔗 <b><a href="${item.url}"> DEX</a></b> || <b><a href="https://www.geckoterminal.com/solana/pools/${item.baseToken?.address}"> Gecko</a></b>
+🏛️ <b>Market Cap:</b> ${formatNumber(item.marketCap)}
+💧 <b>Liquidity:</b> ${formatNumber(item.liquidity?.usd)} 📌 ${Math.round(percentage)}% 
+╰┈➤ <b>Age:</b> 🌱${timeDiffString} ▐▐ <b>📢Boots:</b> ${item.boosts?.active > 0 ? `${item.boosts?.active}⚡️` : '⚠️'}
+📲 <b>Socials</b>
+    ⤷${website ? `<b><a href="${website}">  Website</a></b>` : ''}   ${twitter ? `<b><a href="${twitter}">Twitter</a></b>${twitterUsername ? `<a href="https://t.me/phanes_bot?start=twitter_${twitterUsername}"> ⟫⏩⟪ </a>` : ''}` : ''}   ${telegram ? `<b><a href="${telegram}">Telegram</a></b>` : ''}`;
 };
-export const generateTelegramMessage = (data) => `
-🔥Liquidity Burned: ${Math.round(data.totalLiquidityUSD).toLocaleString('de-DE')} ${data.lpLockedPercentage > 50 ? '🟢' : '🔴'} ${parseFloat(data.lpLockedPercentage).toFixed(0)}%`;
 
-export const generatetotalHolders = (item) => `
-💰 Holders: ${item.totalHolders} ▐▐ 🚩 Score: ${item.score}`;
 
-// export const generateMessageAds = (item) => `
-// 📣Ads: ${item ? '✅' : '❌'}`;
+export const generateTelegramMessageLq = (item) => {
+    const pumpFunMarket = item.markets?.find(m => m.marketType === "pump_fun_amm");
+
+    const pumpValue = pumpFunMarket ? pumpFunMarket.mintLP : item.mint;
+    const pumpValueLock = pumpFunMarket ? Number(pumpFunMarket.lp.lpLockedPct) : null;
+
+    const rawNumber = pumpFunMarket
+        ? Number(pumpFunMarket.lp.lpLockedUSD)
+        : Number(item.totalMarketLiquidity);
+
+    const roundedValue = Math.round(rawNumber).toLocaleString('en-US');
+    const rawValue = `${roundedValue}`;
+
+    const lockType = pumpFunMarket ? '💊 Pump_Fun' : '‼️ None';
+
+    const lockStatus = pumpValueLock !== null && !isNaN(pumpValueLock)
+        ? (pumpValueLock > 50 ? '🟢' : '🔴') + `${pumpValueLock.toFixed(0)}% ${lockType}`
+        : `❓ Unknown Lock ${lockType}`;
+
+
+    const creatorTokens = item.creatorTokens?.length ?? 0;
+
+    const creatorInfo = creatorTokens > 0 ? creatorTokens : 'None';
+
+
+    return `
+🔥 <b>Liquidity Burned</b>: <a href="https://solscan.io/token/${pumpValue}">${rawValue}</a>
+🔐 <b>Lock Status</b>: ${lockStatus}
+👨‍💻 <b>DEV</b>: <a href="https://solscan.io/account/${item.creator}#transfers">Solscan</a>
+🖨️ <b>Creator: </b>${creatorInfo}
+💰<b>Holders: </b><a href="https://solscan.io/token/${item.mint}#holders">${item.totalHolders}</a> ▐▐ 🎯 Score: ${item.score}\;`;
+};
 
 export const generateMessageAds = (item) => `
-📣Ads: ${item.some(item => item?.type === 'tokenAd') ? '✅' : '❌'} ▐▐ 🔥 ${item.some(item => item?.type === 'communityTakeover') ? '✅' : '❌'}`;
+📣<b>Ads:</b> ${item.some(item => item?.type === 'tokenAd') ? '✅' : '❌'} ▐▐ 🔝 ${item.some(item => item?.type === 'communityTakeover') ? '✅' : '❌'}`;
 
 const formatNumber = (num) =>
     num ? num.toLocaleString("de-DE", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) : "0";
 export const generateMessageGtScore = (item) => `
-✨Geckoterminal Score: ${formatNumber(item)}
+✨<b>Geckoterminal Score:</b> ${formatNumber(item)}
 `;

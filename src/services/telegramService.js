@@ -29,14 +29,41 @@ bot.on('message', (msg) => {
 });
 
 // Gửi tin nhắn tới tất cả các chat đã lưu
+// export const sendMessageToAllChats = async (message) => {
+//     try {
+//         const chats = await ChatModel.find({});
+//         for (const { chatId } of chats) {
+//             await bot.sendMessage(chatId, message);
+//         }
+//         console.warn('Message sent to all chat IDs.');
+//     } catch (error) {
+//         console.error('Error sending message to chat IDs:', error);
+//     }
+// };
+
 export const sendMessageToAllChats = async (message) => {
     try {
         const chats = await ChatModel.find({});
         for (const { chatId } of chats) {
-            await bot.sendMessage(chatId, message);
+            try {
+                await bot.sendMessage(chatId, message, {
+                    parse_mode: 'HTML',
+                    disable_web_page_preview: true
+
+                });
+                console.log(`Message sent to chat ID: ${chatId}`);
+            } catch (error) {
+                if (error.message.includes('chat not found')) {
+                    console.error(`Invalid chat ID: ${chatId}, removing from list.`);
+                    // Xóa chatId không hợp lệ khỏi cơ sở dữ liệu
+                    await ChatModel.deleteOne({ chatId });
+                } else {
+                    console.error(`Error sending message to chat ID ${chatId}: ${error.message}`);
+                }
+            }
         }
-        console.warn('Message sent to all chat IDs.');
+        console.warn('Message sending process completed.');
     } catch (error) {
-        console.error('Error sending message to chat IDs:', error);
+        console.error('Error retrieving chats:', error);
     }
 };

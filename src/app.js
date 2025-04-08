@@ -1,10 +1,10 @@
 import express from 'express';
 import { connectDB } from './services/db.js';
 import {
-    startSchedulerCheckMostViewToken,
-    startSchedulerCheckNewToken,
+    // startSchedulerCheckMostViewToken,
+    // startSchedulerCheckNewToken,
     startSchedulerCheckTokenProfile,
-    startSchedulerGetNewToken
+    // startSchedulerGetNewToken
 } from './cron/scheduler.js';
 import { PORT } from './config/config.js';
 
