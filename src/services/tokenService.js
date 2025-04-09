@@ -268,18 +268,18 @@ export const processTokensProfile = async (mappingData) => {
             // điều kiện timestamp
             const THIRTY_MINUTES = 50 * 60 * 1000; // 30 phút (milliseconds)
             const now = Date.now(); // Lấy timestamp hiện tại
-            if (true) {
-                // if (
-                //     sumTop1Holder < 30 &&
-                //     sumTop10Holder  < 30 &&
-                //     sumTop20Holder < 40  &&
-                //     scoreRugCheck < 1000 
+            // if (true) {
+                if (
+                    sumTop1Holder < 30 &&
+                    sumTop10Holder  < 30 &&
+                    sumTop20Holder < 40  &&
+                    scoreRugCheck < 1000 
                     
-                //     /*&&
+                    /*&&
                     
-                //     (now - item.pairCreatedAt) < THIRTY_MINUTES &&
-                //     lpLocked.lpLockedPercentage >= 50 &&
-                //     totalHoldersRugCheck > 500*/) {
+                    (now - item.pairCreatedAt) < THIRTY_MINUTES &&
+                    lpLocked.lpLockedPercentage >= 50 &&
+                    totalHoldersRugCheck > 500*/) {
 
                 const message = `${generateTokenAnnouncement(item)}
                 ${generateMessageAds(item.adsToken)}

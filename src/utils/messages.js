@@ -10,14 +10,15 @@ export const generateRiskMessage = (risks) => {
     });
     return risks.length ? message : '\n💯 **Token Không có rủi ro** 💯\n';
 };
-
 export const generateTopHoldersMessage = (rugCheckResult) => {
     const holders = rugCheckResult.topHolders;
     let message = `\n📊<b>Top Holder Coin</b>\n`;
-    holders.slice(0, 11).forEach(holder => {
+    
+    holders.slice(0, 20).forEach(holder => {
         const link = `https://solscan.io/account/${holder.owner}?remove_spam=true&exclude_amount_zero=true&token_address=${rugCheckResult.mint}#transfers`;
         const percent = holder.pct.toFixed(1);
-        message += `<a href="${link}">${percent}%</a> | `;
+        const isDev = holder.owner === rugCheckResult.creator ? " (dev)" : "";
+        message += `<a href="${link}">${percent}%</a>${isDev} | `;
     });
 
     message += "\n📋 <b>Kết Luận:</b>\n";
@@ -30,10 +31,33 @@ export const generateTopHoldersMessage = (rugCheckResult) => {
     message += `( ๑‾̀◡‾́)✨🌼💫★💫🌼✨✨🌼💫★💫🌼✨\n`;
     message += `████████████████████████████████████ 100%`;
 
-
-
     return message;
 };
+
+
+// export const generateTopHoldersMessage = (rugCheckResult) => {
+//     const holders = rugCheckResult.topHolders;
+//     let message = `\n📊<b>Top Holder Coin</b>\n`;
+//     holders.slice(0, 11).forEach(holder => {
+//         const link = `https://solscan.io/account/${holder.owner}?remove_spam=true&exclude_amount_zero=true&token_address=${rugCheckResult.mint}#transfers`;
+//         const percent = holder.pct.toFixed(1);
+//         message += `<a href="${link}">${percent}%</a> | `;
+//     });
+
+//     message += "\n📋 <b>Kết Luận:</b>\n";
+//     message += `  ↳💵 <b> Liquidity Ratio:</b> ${holders[0].pct.toFixed(1)}%\n`;
+//     message += `  ↳🥇 <b> Top 1 Holders:</b> ${holders[1].pct.toFixed(1)}%\n`;
+//     message += `  ↳🔟 <b> Top 10 Holders:</b> ${holders.slice(1, 11).reduce((sum, holder) => sum + holder.pct, 0).toFixed(1)}%\n`;
+//     message += `  ↳🔝 <b> Top 20 Holders:</b> ${holders.slice(1, 21).reduce((sum, holder) => sum + holder.pct, 0).toFixed(1)}%\n`;
+//     message += `⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘\n`;
+//     message += `✈️✈️✈️✈️✈️ 𝓨𝗼𝘂'𝗿𝗲 𝗽𝗲𝗿𝗳𝗲𝗰𝘁! ✈️✈️✈️✈️✈️\n`;
+//     message += `( ๑‾̀◡‾́)✨🌼💫★💫🌼✨✨🌼💫★💫🌼✨\n`;
+//     message += `████████████████████████████████████ 100%`;
+
+
+
+//     return message;
+// };
 export const generateTokenAnnouncement = (item, isNewToken = false, isViewToken = false) => {
     // Biến link thành text có thể nhấp
     const formatUrlAsText = (url) => url ? `(${url})` : "N/A";
