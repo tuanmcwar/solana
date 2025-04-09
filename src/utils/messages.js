@@ -11,22 +11,26 @@ export const generateRiskMessage = (risks) => {
     return risks.length ? message : '\n💯 **Token Không có rủi ro** 💯\n';
 };
 
-export const generateTopHoldersMessage = (holders) => {
-
+export const generateTopHoldersMessage = (rugCheckResult) => {
+    const holders = rugCheckResult.topHolders;
     let message = `\n📊<b>Top Holder Coin</b>\n`;
     holders.slice(0, 11).forEach(holder => {
-        const link = `https://solscan.io/account/${holder.owner}`;
+        const link = `https://solscan.io/account/${holder.owner}?remove_spam=true&exclude_amount_zero=true&token_address=${rugCheckResult.mint}#transfers`;
         const percent = holder.pct.toFixed(1);
         message += `<a href="${link}">${percent}%</a> | `;
     });
 
     message += "\n📋 <b>Kết Luận:</b>\n";
-    message += `- 💵 <b>Liquidity Ratio:</b> ${holders[0].pct.toFixed(1)}%\n`;
-    message += `- 🥇 <b>Top 1 Holders:</b> ${holders[1].pct.toFixed(1)}%\n`;
-    message += `- 🔟 <b>Top 10 Holders:</b> ${holders.slice(1, 11).reduce((sum, holder) => sum + holder.pct, 0).toFixed(1)}%\n`;
-    message += `- 🔝 <b>Top 20 Holders:</b> ${holders.slice(1, 21).reduce((sum, holder) => sum + holder.pct, 0).toFixed(1)}%\n`;
-    message += `⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘\n`;
-    message += `✈️✈️✈️✈️✈️ 𝓨𝗼𝘂'𝗿𝗲 𝗽𝗲𝗿𝗳𝗲𝗰𝘁! ✈️✈️✈️✈️✈️`;
+    message += `  ↳💵 <b> Liquidity Ratio:</b> ${holders[0].pct.toFixed(1)}%\n`;
+    message += `  ↳🥇 <b> Top 1 Holders:</b> ${holders[1].pct.toFixed(1)}%\n`;
+    message += `  ↳🔟 <b> Top 10 Holders:</b> ${holders.slice(1, 11).reduce((sum, holder) => sum + holder.pct, 0).toFixed(1)}%\n`;
+    message += `  ↳🔝 <b> Top 20 Holders:</b> ${holders.slice(1, 21).reduce((sum, holder) => sum + holder.pct, 0).toFixed(1)}%\n`;
+    message += `⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘\n`;
+    message += `✈️✈️✈️✈️✈️ 𝓨𝗼𝘂'𝗿𝗲 𝗽𝗲𝗿𝗳𝗲𝗰𝘁! ✈️✈️✈️✈️✈️\n`;
+    message += `( ๑‾̀◡‾́)✨🌼💫★💫🌼✨✨🌼💫★💫🌼✨\n`;
+    message += `████████████████████████████████████ 100%`;
+
+
 
     return message;
 };
@@ -110,16 +114,16 @@ export const generateTelegramMessageLq = (item) => {
 
     const creatorTokens = item.creatorTokens?.length ?? 0;
 
-    const creatorInfo = creatorTokens > 0 ? creatorTokens : 'None';
+    const creatorInfoRugCheck = creatorTokens > 0 ? creatorTokens : 'None';
 
 
     return `
 🔥 <b>Liquidity Burned</b>: <a href="https://solscan.io/token/${pumpValue}">${rawValue}</a>
 🔐 <b>Lock Status</b>: ${lockStatus}
-👨‍💻 <b>DEV</b>: <a href="https://solscan.io/account/${item.creator}#transfers">Solscan</a>
-🖨️ <b>Creator: </b>${creatorInfo}
-💰<b>Holders: </b><a href="https://solscan.io/token/${item.mint}#holders">${item.totalHolders}</a> ▐▐ 🎯 Score: ${item.score}\;`;
-};
+👨‍💻 <b>DEV</b>: <a href="https://solscan.io/account/${item.creator}#transfers">Solscan</a> || <a href="https://solscan.io/account/${item.creator}?remove_spam=true&exclude_amount_zero=true&token_address=${item.mint}#transfers">Dev Buy/Sell</a> 
+🖨️ <b>Creator: </b><a href="https://solscan.io/account/${item.creator}?activity_type=ACTIVITY_SPL_INIT_MINT#defiactivities">Solscan</a>
+💰 <b>Holders: </b><a href="https://solscan.io/token/${item.mint}#holders">${item.totalHolders}</a> ▐▐  🎯 Score: ${item.score}
+☎️ <b><a href="https://t.me/spydefi_bot?start=${item.mint}">Check Call⌯⌲</a></b>`};
 
 export const generateMessageAds = (item) => `
 📣<b>Ads:</b> ${item.some(item => item?.type === 'tokenAd') ? '✅' : '❌'} ▐▐ 🔝 ${item.some(item => item?.type === 'communityTakeover') ? '✅' : '❌'}`;

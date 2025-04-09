@@ -268,25 +268,28 @@ export const processTokensProfile = async (mappingData) => {
             // điều kiện timestamp
             const THIRTY_MINUTES = 50 * 60 * 1000; // 30 phút (milliseconds)
             const now = Date.now(); // Lấy timestamp hiện tại
-            // if (true) {
-                if (
-                    sumTop1Holder < 30 &&
-                    sumTop10Holder  < 30 &&
-                    sumTop20Holder < 40  &&
-                    scoreRugCheck < 1000 /*&&
-                    (now - item.pairCreatedAt) < THIRTY_MINUTES &&
-                    lpLocked.lpLockedPercentage >= 50 &&
-                    totalHoldersRugCheck > 500*/) {
+            if (true) {
+                // if (
+                //     sumTop1Holder < 30 &&
+                //     sumTop10Holder  < 30 &&
+                //     sumTop20Holder < 40  &&
+                //     scoreRugCheck < 1000 
+                    
+                //     /*&&
+                    
+                //     (now - item.pairCreatedAt) < THIRTY_MINUTES &&
+                //     lpLocked.lpLockedPercentage >= 50 &&
+                //     totalHoldersRugCheck > 500*/) {
 
                 const message = `${generateTokenAnnouncement(item)}
                 ${generateMessageAds(item.adsToken)}
                 ${generateTelegramMessageLq(rugCheckResult)}
-                ${generateTopHoldersMessage(rugCheckResult.topHolders)}
+                ${generateTopHoldersMessage(rugCheckResult)}
                 `;
                 // console.log(message);
 
                 await sendMessageToAllChats(message);
-                await new TokenModel({ key: tokenKey, data: newTokenData }).save();
+                // await new TokenModel({ key: tokenKey, data: newTokenData }).save();
             }
         } else if (!isEqual(existingTokenData.data, newTokenData)) {
             existingTokenData.data = newTokenData;
