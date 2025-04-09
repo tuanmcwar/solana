@@ -79,7 +79,7 @@ export const generateTokenAnnouncement = (item, isNewToken = false, isViewToken 
 ➤ <b>CA:</b> <code>${item.baseToken?.address || "N/A"}</code>
 💎 <b>Name:</b> ${item.baseToken?.symbol || "Unknown"}
 🔎 <b>Chain:</b> ${item.chainId || "N/A"}
-🔗 <b><a href="${item.url}"> DEX</a></b> || <b><a href="https://www.geckoterminal.com/solana/pools/${item.baseToken?.address}"> Gecko</a></b>
+🔗 <b><a href="${item.url}"> DEX</a></b> || <b><a href="https://www.geckoterminal.com/solana/pools/${item.baseToken?.address}"> Gecko</a></b> || <b><a href="https://mevx.io/solana/${item.baseToken?.address}"> Mevx</a></b>
 🏛️ <b>Market Cap:</b> ${formatNumber(item.marketCap)}
 💧 <b>Liquidity:</b> ${formatNumber(item.liquidity?.usd)} 📌 ${Math.round(percentage)}% 
 ╰┈➤ <b>Age:</b> 🌱${timeDiffString} ▐▐ <b>📢Boots:</b> ${item.boosts?.active > 0 ? `${item.boosts?.active}⚡️` : '⚠️'}
